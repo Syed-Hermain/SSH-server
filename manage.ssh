@@ -1,0 +1,42 @@
+#!/bin/bash
+
+echo " Starting SSH server"
+
+if ! command -v sshd >/dev/null 2>&1; then
+        echo "[!] OpenSSH server not found. Installing now..."
+        sudo apt update && sudo apt install -y openssh-server
+        if [ $? -eq 0 ]; then
+                echo "[+] Installation successful!"
+        else
+                echo "[X] Installation failed! Please check you internet connection."
+                exit 1
+        fi
+else
+        echo "[+] OpenSSH server is already installed."
+fi
+
+echo "[*] Verifying SSH configuration..."
+sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+sudo sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+echo "[*] Starting SSH service"
+sudo systemctl enable --now ssh
+
+
+echo "[*] Updating firewall rules (UFW)..."
+sudo ufw allow ssh >/dev/null 2>&1
+sudo ufw reload >/dev/null 2>&1
+
+echo "[*] Clearing any account login locks..."
+sudo faillock --user $USER --reset >/dev/null 2>&1
+
+#CONNECTION DETAILS
+IP_ADDR=$( hostname -I | awk '{print $1}' )
+
+echo "----------------------------------------------------------------"
+echo "---------------------------SUCCESS------------------------------"
+echo "Ubuntu User: $USER"
+echo "Ubuntu IP: $IP_ADDR"
+echo "FROM WINDOWS, RUN THIS COMMAND:"
+echo "ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no $USER@$IP_ADDR"
+echo "----------------------------------------------------------------"
