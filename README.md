@@ -30,13 +30,13 @@ I authored a Bash script to handle the "dirty work" of server administration. It
 ### 1. Server-Side Execution
 The following image shows the `manage_ssh.sh` script running successfully. Note the IP address detection and the "Active" status of the SSH service.
 
-![Ubuntu Terminal Success](ubuntu_success.png)
+![Ubuntu Terminal Success](https://github.com/Syed-Hermain/SSH-server/blob/41ea97773dc51648ba6387d996f016d95173bb17/view/ubuntuserver.png)
 *Caption: Ubuntu terminal showing the script output and `sudo systemctl status ssh` confirming the server is listening.*
 
 ### 2. Client-Side Connection
 This image confirms the connection from the Windows PowerShell terminal. By bypassing Public Key checks, I successfully reached the Ubuntu bash prompt.
 
-![Windows Terminal Success](windows_success.png)
+![Windows Terminal Success](https://github.com/Syed-Hermain/SSH-server/blob/41ea97773dc51648ba6387d996f016d95173bb17/view/loggedin.png)
 *Caption: Windows terminal showing the successful login to the Ubuntu VM via SSH.*
 
 ---
@@ -63,12 +63,6 @@ This image confirms the connection from the Windows PowerShell terminal. By bypa
    - Open PowerShell.
    - Run: `ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no ubuntu@<VM_IP>`
 
----
-
-## 📚 Lessons Learned
-* **Bridged Networking:** Essential for "peer-to-peer" communication between VMs and Hosts.
-* **Idempotency:** Designing scripts that can run multiple times without breaking the system.
-* **SSH Debugging:** Learning to use `-o` flags to force specific authentication methods when defaults fail.
 
 ---
 *Created by Syed Hermain*
